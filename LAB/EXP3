@@ -1,0 +1,140 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOHXgGZ4Cd1RmPUITwMJnFK",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Sai-charan822/DSA03-NLP/blob/main/LAB/EXP3\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "8f6dd07e"
+      },
+      "source": [
+        "### Experiment 3: Morphological Analysis using NLTK\n",
+        "This program demonstrates basic morphological analysis (Tokenization, POS tagging, Stemming, and Lemmatization) using the Natural Language Toolkit (NLTK) in Python."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "5fea250c",
+        "outputId": "7a931af4-d9ec-436c-a3d7-6f5bbfe18a71"
+      },
+      "source": [
+        "import nltk\n",
+        "from nltk.tokenize import word_tokenize\n",
+        "from nltk.stem import PorterStemmer, WordNetLemmatizer\n",
+        "\n",
+        "# Download necessary NLTK datasets\n",
+        "nltk.download('punkt')\n",
+        "nltk.download('punkt_tab')\n",
+        "nltk.download('wordnet')\n",
+        "nltk.download('averaged_perceptron_tagger')\n",
+        "nltk.download('averaged_perceptron_tagger_eng')\n",
+        "\n",
+        "# Sample text\n",
+        "sample_text = \"The cats are running quickly and studies show they enjoyed studying yesterday.\"\n",
+        "print(f\"Original Text: {sample_text}\\n\")\n",
+        "\n",
+        "# 1. Tokenization\n",
+        "tokens = word_tokenize(sample_text)\n",
+        "print(f\"Tokens: {tokens}\\n\")\n",
+        "\n",
+        "# 2. Stemming (Porter Stemmer)\n",
+        "stemmer = PorterStemmer()\n",
+        "stems = [stemmer.stem(token) for token in tokens]\n",
+        "print(f\"Stemmed Words: {stems}\\n\")\n",
+        "\n",
+        "# 3. Lemmatization (WordNet Lemmatizer)\n",
+        "lemmatizer = WordNetLemmatizer()\n",
+        "lemmas = [lemmatizer.lemmatize(token) for token in tokens]\n",
+        "print(f\"Lemmatized Words (default/Noun): {lemmas}\\n\")\n",
+        "\n",
+        "# Lemmatization with POS context (Verbs)\n",
+        "lemmas_verbs = [lemmatizer.lemmatize(token, pos='v') for token in tokens]\n",
+        "print(f\"Lemmatized Words (Verbs context): {lemmas_verbs}\\n\")\n",
+        "\n",
+        "# 4. Part-of-Speech (POS) Tagging\n",
+        "pos_tags = nltk.pos_tag(tokens)\n",
+        "print(\"POS Tagging Results:\")\n",
+        "for word, tag in pos_tags:\n",
+        "    print(f\"  {word:12} -> {tag}\")"
+      ],
+      "execution_count": 8,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "[nltk_data] Downloading package punkt to /root/nltk_data...\n",
+            "[nltk_data]   Unzipping tokenizers/punkt.zip.\n",
+            "[nltk_data] Downloading package punkt_tab to /root/nltk_data...\n",
+            "[nltk_data]   Unzipping tokenizers/punkt_tab.zip.\n",
+            "[nltk_data] Downloading package wordnet to /root/nltk_data...\n",
+            "[nltk_data] Downloading package averaged_perceptron_tagger to\n",
+            "[nltk_data]     /root/nltk_data...\n",
+            "[nltk_data]   Unzipping taggers/averaged_perceptron_tagger.zip.\n",
+            "[nltk_data] Downloading package averaged_perceptron_tagger_eng to\n",
+            "[nltk_data]     /root/nltk_data...\n",
+            "[nltk_data]   Unzipping taggers/averaged_perceptron_tagger_eng.zip.\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Original Text: The cats are running quickly and studies show they enjoyed studying yesterday.\n",
+            "\n",
+            "Tokens: ['The', 'cats', 'are', 'running', 'quickly', 'and', 'studies', 'show', 'they', 'enjoyed', 'studying', 'yesterday', '.']\n",
+            "\n",
+            "Stemmed Words: ['the', 'cat', 'are', 'run', 'quickli', 'and', 'studi', 'show', 'they', 'enjoy', 'studi', 'yesterday', '.']\n",
+            "\n",
+            "Lemmatized Words (default/Noun): ['The', 'cat', 'are', 'running', 'quickly', 'and', 'study', 'show', 'they', 'enjoyed', 'studying', 'yesterday', '.']\n",
+            "\n",
+            "Lemmatized Words (Verbs context): ['The', 'cat', 'be', 'run', 'quickly', 'and', 'study', 'show', 'they', 'enjoy', 'study', 'yesterday', '.']\n",
+            "\n",
+            "POS Tagging Results:\n",
+            "  The          -> DT\n",
+            "  cats         -> NNS\n",
+            "  are          -> VBP\n",
+            "  running      -> VBG\n",
+            "  quickly      -> RB\n",
+            "  and          -> CC\n",
+            "  studies      -> NNS\n",
+            "  show         -> VBP\n",
+            "  they         -> PRP\n",
+            "  enjoyed      -> VBD\n",
+            "  studying     -> VBG\n",
+            "  yesterday    -> NN\n",
+            "  .            -> .\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
