@@ -1,0 +1,112 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPSuPtTtOVP8Rd8WkEuRmnq",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Sai-charan822/DSA03-NLP/blob/main/LAB/EXP1\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "82e99bca",
+        "outputId": "613d3701-c109-4f6b-dccb-2c587a0f0a9c"
+      },
+      "source": [
+        "import re\n",
+        "\n",
+        "# Sample text to perform operations\n",
+        "text = \"\"\"\n",
+        "Hello, my name is Alice. My email is alice@example.com and my phone number is 123-456-7890.\n",
+        "Bob's email is bob.123@work.org. You can also contact support at support@domain.net or call us at 987-654-3210.\n",
+        "\"\"\"\n",
+        "\n",
+        "print(\"=== Experiment 1: Regular Expressions in Python ===\\n\")\n",
+        "\n",
+        "# 1. Matching a pattern at the beginning of the string using re.match()\n",
+        "print(\"--- 1. re.match() ---\")\n",
+        "match_hello = re.match(r\"Hello\", text)\n",
+        "if match_hello:\n",
+        "    print(f\"Found match at start: '{match_hello.group()}'\")\n",
+        "else:\n",
+        "    print(\"No match found at the beginning of the text.\")\n",
+        "\n",
+        "# 2. Searching for the first occurrence of a pattern using re.search()\n",
+        "print(\"\\n--- 2. re.search() ---\")\n",
+        "# Search for any phone number formatted as xxx-xxx-xxxx\n",
+        "phone_search = re.search(r\"\\d{3}-\\d{3}-\\d{4}\", text)\n",
+        "if phone_search:\n",
+        "    print(f\"First phone number found: '{phone_search.group()}' at position {phone_search.span()}\")\n",
+        "\n",
+        "# 3. Finding all occurrences using re.findall()\n",
+        "print(\"\\n--- 3. re.findall() ---\")\n",
+        "# Find all emails in the text\n",
+        "emails = re.findall(r\"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\", text)\n",
+        "print(\"Emails found:\", emails)\n",
+        "\n",
+        "# 4. Finding all matches and their positions using re.finditer()\n",
+        "print(\"\\n--- 4. re.finditer() ---\")\n",
+        "print(\"All phone numbers with positions:\")\n",
+        "for match in re.finditer(r\"\\d{3}-\\d{3}-\\d{4}\", text):\n",
+        "    print(f\"- Found '{match.group()}' from index {match.start()} to {match.end()}\")\n",
+        "\n",
+        "# 5. Substituting patterns using re.sub()\n",
+        "print(\"\\n--- 5. re.sub() (Anonymization) ---\")\n",
+        "# Redact emails in the text\n",
+        "anonymized_text = re.sub(r\"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\", \"[EMAIL REDACTED]\", text)\n",
+        "print(\"Anonymized Text:\", anonymized_text.strip())"
+      ],
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "=== Experiment 1: Regular Expressions in Python ===\n",
+            "\n",
+            "--- 1. re.match() ---\n",
+            "No match found at the beginning of the text.\n",
+            "\n",
+            "--- 2. re.search() ---\n",
+            "First phone number found: '123-456-7890' at position (79, 91)\n",
+            "\n",
+            "--- 3. re.findall() ---\n",
+            "Emails found: ['alice@example.com', 'bob.123@work.org', 'support@domain.net']\n",
+            "\n",
+            "--- 4. re.finditer() ---\n",
+            "All phone numbers with positions:\n",
+            "- Found '123-456-7890' from index 79 to 91\n",
+            "- Found '987-654-3210' from index 191 to 203\n",
+            "\n",
+            "--- 5. re.sub() (Anonymization) ---\n",
+            "Anonymized Text: Hello, my name is Alice. My email is [EMAIL REDACTED] and my phone number is 123-456-7890.\n",
+            "Bob's email is [EMAIL REDACTED]. You can also contact support at [EMAIL REDACTED] or call us at 987-654-3210.\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
