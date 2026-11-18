@@ -1,0 +1,121 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOgDPmQkeWflNlOExSrF6E1",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Sai-charan822/DSA03-NLP/blob/main/LAB/EXP2\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "a799bc94"
+      },
+      "source": [
+        "### Experiment 2: Finite State Automaton (FSA) for Strings Ending in 'ab'\n",
+        "This program implements a deterministic finite automaton (DFA) that transitions between states as it processes a sequence of characters to verify if the input string ends with the pattern `'ab'`."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "26d13fd0",
+        "outputId": "8066efae-12db-4d88-e39a-6667cd3eaf0d"
+      },
+      "source": [
+        "class EndingInABAutomaton:\n",
+        "    def __init__(self):\n",
+        "        # We define three states:\n",
+        "        # S0: Start / Reset state (last character was not 'a' or 'b')\n",
+        "        # S1: State indicating the last character read was 'a'\n",
+        "        # S2: Accepting State indicating the last two characters read were 'ab'\n",
+        "        self.initial_state = 'S0'\n",
+        "        self.accepting_state = 'S2'\n",
+        "\n",
+        "        # Transition table\n",
+        "        self.transitions = {\n",
+        "            'S0': {'a': 'S1', 'b': 'S0'},\n",
+        "            'S1': {'a': 'S1', 'b': 'S2'},\n",
+        "            'S2': {'a': 'S1', 'b': 'S0'}\n",
+        "        }\n",
+        "\n",
+        "    def accepts(self, input_string):\n",
+        "        current_state = self.initial_state\n",
+        "\n",
+        "        for char in input_string:\n",
+        "            # If the character is not 'a' or 'b', treat it as returning to S0\n",
+        "            if char in self.transitions[current_state]:\n",
+        "                current_state = self.transitions[current_state][char]\n",
+        "            else:\n",
+        "                current_state = 'S0'\n",
+        "\n",
+        "        # Check if the final state reached is the accepting state\n",
+        "        return current_state == self.accepting_state\n",
+        "\n",
+        "# Instantiate the automaton\n",
+        "fsa = EndingInABAutomaton()\n",
+        "\n",
+        "# Test strings to validate the automaton\n",
+        "test_strings = [\n",
+        "    \"ab\",\n",
+        "    \"cab\",\n",
+        "    \"abc\",\n",
+        "    \"abab\",\n",
+        "    \"a\",\n",
+        "    \"b\",\n",
+        "    \"ba\",\n",
+        "    \"testing_ab\",\n",
+        "    \"endingwithab\"\n",
+        "]\n",
+        "\n",
+        "print(\"=== FSA Test: Strings Ending with 'ab' ===\")\n",
+        "for test in test_strings:\n",
+        "    result = fsa.accepts(test)\n",
+        "    status = \"ACCEPTED\" if result else \"REJECTED\"\n",
+        "    print(f\"String: '{test:12}' -> {status}\")"
+      ],
+      "execution_count": 7,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "=== FSA Test: Strings Ending with 'ab' ===\n",
+            "String: 'ab          ' -> ACCEPTED\n",
+            "String: 'cab         ' -> ACCEPTED\n",
+            "String: 'abc         ' -> REJECTED\n",
+            "String: 'abab        ' -> ACCEPTED\n",
+            "String: 'a           ' -> REJECTED\n",
+            "String: 'b           ' -> REJECTED\n",
+            "String: 'ba          ' -> REJECTED\n",
+            "String: 'testing_ab  ' -> ACCEPTED\n",
+            "String: 'endingwithab' -> ACCEPTED\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
